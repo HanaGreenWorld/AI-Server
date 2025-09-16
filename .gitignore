@@ -165,7 +165,9 @@ dmypy.json
 cython_debug/
 
 .DS_Store
-.env*
+
+.env
+
 /logs/
 
 # PyCharm
