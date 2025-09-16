@@ -64,11 +64,7 @@ python manage.py runserver 0.0.0.0:8083
 - `POST /api/analyze-image/` - 이미지 분석
 
 ### 친환경 서비스
-- `POST /api/eco/recommendation/` - 친환경 추천
 - `POST /api/eco/quiz/` - 퀴즈 생성
-- `POST /api/eco/tips/` - 친환경 팁
-- `POST /api/eco/motivation/` - 동기부여 메시지
-- `POST /api/eco/challenge/` - 챌린지 아이디어
 
 ## 🔗 hanagreenworld 연동
 
