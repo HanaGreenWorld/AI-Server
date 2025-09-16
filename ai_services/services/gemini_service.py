@@ -16,8 +16,8 @@ class GeminiService:
             raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다.")
         
         genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
-        self.vision_model = genai.GenerativeModel('gemini-1.5-pro')
+        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        self.vision_model = genai.GenerativeModel('gemini-1.5-flash')
     
     def generate_text(self, prompt: str, **kwargs) -> Dict[str, Any]:
         """
@@ -28,14 +28,14 @@ class GeminiService:
             return {
                 'success': True,
                 'text': response.text,
-                'model': 'gemini-1.5-pro'
+                'model': 'gemini-1.5-flash'
             }
         except Exception as e:
             logger.error(f"Gemini 텍스트 생성 오류: {str(e)}")
             return {
                 'success': False,
                 'error': str(e),
-                'model': 'gemini-1.5-pro'
+                'model': 'gemini-1.5-flash'
             }
     
     def analyze_image(self, image_data: bytes, prompt: str = "이 이미지를 분석해주세요.") -> Dict[str, Any]:
@@ -53,14 +53,14 @@ class GeminiService:
             return {
                 'success': True,
                 'text': response.text,
-                'model': 'gemini-1.5-pro'
+                'model': 'gemini-1.5-flash'
             }
         except Exception as e:
             logger.error(f"Gemini 이미지 분석 오류: {str(e)}")
             return {
                 'success': False,
                 'error': str(e),
-                'model': 'gemini-1.5-pro'
+                'model': 'gemini-1.5-flash'
             }
     
     def generate_quiz_question(self) -> Dict[str, Any]:
@@ -94,18 +94,27 @@ class GeminiService:
             
             # JSON 파싱 시도
             try:
-                result = json.loads(response.text)
+                # 마크다운 코드 블록 제거
+                text = response.text.strip()
+                if text.startswith('```json'):
+                    text = text[7:]  # ```json 제거
+                if text.endswith('```'):
+                    text = text[:-3]  # ``` 제거
+                text = text.strip()
+                
+                result = json.loads(text)
                 return {
                     'success': True,
                     'quiz': result,
-                    'model': 'gemini-1.5-pro'
+                    'model': 'gemini-1.5-flash'
                 }
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON 파싱 실패: {e}, 원본 텍스트: {response.text}")
                 # JSON 파싱 실패 시 텍스트 그대로 반환
                 return {
                     'success': True,
                     'quiz_text': response.text,
-                    'model': 'gemini-1.5-pro'
+                    'model': 'gemini-1.5-flash'
                 }
                 
         except Exception as e:
@@ -113,5 +122,5 @@ class GeminiService:
             return {
                 'success': False,
                 'error': str(e),
-                'model': 'gemini-1.5-pro'
+                'model': 'gemini-1.5-flash'
             }
