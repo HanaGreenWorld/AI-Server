@@ -170,6 +170,8 @@ cython_debug/
 
 /logs/
 
+chroma_db/
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
@@ -177,4 +179,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# End of https://www.toptal.com/developers/gitignore/api/django
+# End of https://www.toptal.com/developers/gitignore/api/django*.db
+*.sqlite3
+logs/*.log
+venv/
+__pycache__/
+*.pyc
